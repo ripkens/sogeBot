@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Stats</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#f4f5f6">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#f4f5f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+      html, body {
+        width: 99%;
+        height: 99%;
+        padding: 0;
+        margin: 0;
+        font-family: 'Roboto Condensed'
+      }
+
+      #messages {
+        position: absolute;
+        bottom:0;
+      }
+
+      .message {
+        width: 100%;
+        background-color: rgba(25,25,25,0.3);
+        word-wrap: break-word;
+        border-bottom: 1px solid rgba(50,50,50,0.5);
+        position: relative;
+        left: 0px;
+        animation: fadeOut 2s ease-in 20s forwards;
+      }
+
+      .message:last-child {
+        border: 0;
+      }
+
+      .username {
+        font-weight: bold;
+        font-variant: small-caps;
+        color: white;
+        padding-left: 10px;
+      }
+
+      .time {
+        color: rgb(220, 220, 220);
+        font-size: small;
+        float: right;
+        position: relative;
+        top:-15px;
+        padding-right: 10px;
+      }
+
+      .text {
+        padding: 5px;
+        padding-left: 20px; padding-right: 20px;
+        color:azure;
+        font-size: small;
+      }
+
+      @keyframes moveIn {
+          from {left: -1000px;}
+          to {left: 0px;}
+      }
+
+      @keyframes fadeOut {
+          from {opacity: 1;}
+          to {opacity: 0;}
+      }
+    </style>
+  </head>
+  <body>
+    <div id="messages">
+      <div class="message">
+        <div class="username">Sogehige</div>
+        <div class="time">06-08-2017 16:18:27</div>
+        <div class="text">Ahoj to jsem ja</div>
+      </div>
+
+      <div class="message">
+        <div class="username">sogehige</div>
+        <div class="time">06-08-2017 16:18:27</div>
+        <div class="text">Lorem ipsum dolor sit amet bozi jsi jako ja. Zajimalo by me jak moc jsem bozi?</div>
+      </div>
+    </div>
+  </body>
+
+  <script src="/dist/jquery/js/jquery.min.js"></script>
+  <script>
+    setInterval(function () {
+      $('#messages').append('<div class="message">' +
+        '<div class="username">Sogehige</div>' +
+        '<div class="time">06-08-2017 16:18:27</div>' +
+        '<div class="text">Ahoj to jsem ja</div>' +
+      '</div>')
+    }, 5000)
+  </script>
+</html>
