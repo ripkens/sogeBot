@@ -464,17 +464,13 @@
       socket.on('sendGameFromTwitch', function(status) {
         changeGT.gameInputStatus(status)
       })
-
       socket.on('sendUserTwitchGamesAndTitles', function(data) {
         delete data._id
         changeGT.update(data)
       })
-
       socket.on('lang', function (data) {
         translations = data
-        _.each(data, function (value, key) {
-          $('[data-lang="' + key + '"]').text(value)
-        })
+        commons.translate()
         $('#change-game-input').attr('placeholder', translations['create-and-use-a-new-game'])
         $('#change-title').attr('placeholder', translations['create-and-use-a-new-title'])
       })
@@ -485,34 +481,44 @@
       })
 
 
-    var commons = {
+      var commons = {
         translate: function () {
           _.each($('[data-lang]'), function (el) {
             var key = ($(el).data('lang'))
             $(el).text(_.at(translations, key)[0])
+            if (_.isNil(_.at(translations, key)[0])) {
+              if (key.startsWith('responses.variable.')) $(el).text('Unknown variable $' + key.replace('responses.variable.', ''))
+              else $(el).text('undefined: ' + key)
+            }
           })
         },
         editable: function (string, id, fnc) {
           id = id || ''
-          var output = '<abbr title="click to edit" data-id="' + id + '" onclick="commons.editableSwap(\'' + id + '\')">' + string + '</abbr>'
-          output += '<input style="display: none" data-fnc="' + fnc + '" class="form-control input-sm" data-id="' + id + '" type="text" value="' + string + '"/>'
-          return output
-        },
-        editableSwap: function (id) {
-          if ($('abbr[data-id="' + id + '"]').css('display') == 'inline') $('abbr[data-id="' + id + '"]').css('display', 'none')
-          else $('abbr[data-id="' + id + '"]').css('display', 'inline')
-          if ($('input[data-id="' + id + '"]').css('display') == 'inline-block') $('input[data-id="' + id + '"]').css('display', 'none')
-          else {
-            $('input[data-id="' + id + '"]').css('display', 'inline-block')
-              .focus()
-              .off('focusout')
-              .on('focusout', function (ev) {
-                commons.editableSwap(id)
-                $('abbr[data-id="' + id + '"]').text($(ev.target).val())
-                var fnc = ev.target.dataset.fnc.split('.')
-                window[fnc[0]][fnc[1]](id, $(ev.target).val())
+          string = string.toString()
+          var stringAbbr = string.replace(/\$(\w*)/g, '<span contenteditable="false" style="display: inline-block; font-family: monospace; color: #e00956; border: 1px solid #cbcbcb; border-radius: 5px !important; padding: 0 5px 0 5px; background-color: #f5f4f7" data-lang="responses.variable.$1"></span>')
+          var output = '<abbr style="width: 100%" title="click to edit" data-id="' + id + '" data-fnc="' + fnc + '" contenteditable="true">' + stringAbbr + '</abbr>'
+
+          setTimeout(function() {
+            commons.translate();
+            $('[contenteditable=true]').off()
+            $('[contenteditable=true]')
+              // When you click on item, record into data("initialText") content of this item.
+              .focus(function() {
+                  $(this).data("initialText", $(this).html());
               })
-          }
+              // When you leave an item...
+              .blur(function() {
+                // ...if content is different...
+                if ($(this).data("initialText") !== $(this).html()) {
+                  var newString = $(this).html().replace(/<span .*?data-lang="responses\.variable\.(.+?)">.*?<\/span>/g, '&36;$1').replace(/&36;/g, '$').replace(/&nbsp;/g, ' ')
+                  $(this).html(newString.replace(/\$(\w*)/g, '<span contenteditable="false" style="display: inline-block; font-family: monospace; color: #e00956; border: 1px solid #cbcbcb; border-radius: 5px !important; padding: 0 5px 0 5px; background-color: #f5f4f7" data-lang="responses.variable.$1"></span>'))
+                  var fnc = $(this).data('fnc').split('.')
+                  window[fnc[0]][fnc[1]]($(this).data('id'), newString)
+                  commons.translate()
+                }
+            });
+          }, 100)
+          return output
         },
         getDateString: function (d) {
           return ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +

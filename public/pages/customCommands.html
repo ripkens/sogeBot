@@ -1,64 +1,66 @@
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
   <div class="widget">
-    <h2 class="title" data-lang="custom-commands"></h2>
+    <h2 class="title">
+      <span data-lang="custom-commands"></span>
+      <button class="btn btn-primary" onclick="cc.newCommand()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+      <div class="btn-group">
+        <button id="save-button" class="btn btn-success new-confirm-btn" style="display:none" onclick="cc.createCommand(event)">SAVE</button>
+        <button class="btn btn-warning new-confirm-btn" style="display:none" onclick="cc.cancelNewCommand()">CANCEL</button>
+      </div>
+    </h2>
     <table class="table table-striped table-responsive table-condensed">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th data-lang="command"></th>
-          <th data-lang="response"></th>
-          <th></th>
-        </tr>
-      </thead>
       <tbody id="Commands"></tbody>
     </table>
   </div>
 </div>
 
-
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-  <div class="widget">
-    <h2 class="title" data-lang="create"></h2>
-    <form class="form-horizontal">
-      <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-8 col-sm-offset-2 col-sm-8 input-group">
-          <div class="input-group-addon" data-lang="command"></div>
-          <input type="text" class="form-control" id="inputCommand" placeholder="e.g. discord">
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-xs-offset-2 col-xs-8 col-sm-offset-2 col-sm-8 input-group">
-          <div class="input-group-addon" data-lang="response"></div>
-          <input type="text" class="form-control" id="inputResponse" placeholder="e.g. Here is my discord link!">
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-xs-12 col-sm-12 text-center">
-          <button type="submit" class="btn btn-primary" onclick="cc.createCommand(event)" data-lang="confirm"></button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
 <script>
   var cc = {
+    list: {},
+    cancelNewCommand: function () {
+      $('#new-command').css('display', 'none')
+      $('.new-confirm-btn').css('display', 'none')
+      this.updateCommands(this.list)
+    },
+    newCommand: function () {
+      $('#new-command').css('display', 'table-row')
+      $('.new-confirm-btn').css('display', 'block')
+
+      $('[contenteditable=true]').off()
+      $('#new-command [contenteditable=true]:first').keyup(function (ev) {
+        var command = $(ev.target).text().trim()
+        if (!command.startsWith('!')) command = '!' + command
+        socket.emit('parser.isRegistered', { emit: 'alias.check', command: command })
+      })
+    },
+    stub: function (id, value) {
+      return // do nothing
+    },
     updateCommands: function (list) {
+      this.list = list
       $("#Commands").empty()
+      $("#Commands").append('<tr id="new-command" style="display:none">' +
+          '<td style="vertical-align: top !important;"><span class="label label-default">New command</span> <span class="status label label-warning">available</span>' + commons.editable('', '_new!', 'cc.stub') + '</td>' +
+          '<td style="vertical-align: top !important;"><span class="label label-primary">Response</span> ' +
+              commons.editable('<empty response>', '_new!', 'cc.stub') +
+          '</td>' +
+          '</tr>');
       _.each(list, function(item, index) {
-        $("#Commands").append('<tr style="' + (!item.enabled ? "text-decoration: line-through": "") + '" class="' + (item.visible ? '' : 'text-danger') + '">' +
-          '<td>' + (index + 1) + '</td>' +
-          '<td>!' + item.command + '</td>' +
-          '<td>' + commons.editable(item.response, item.command, 'cc.editCommand') + '</td>' +
-          '<td class="tableMenu">' +
-          '<button type="button" class="btn btn-' + (!item.visible ? 'success fa fa-eye' : 'danger fa fa-eye-slash') + '" data-command="' + item.command + '" onclick="cc.toggleVisibilityCommand(this)"></button>' +
-          '<button type="button" class="btn btn-' + (!item.enabled ? 'success' : 'danger') + '" data-command="' + item.command + '" onclick="cc.toggleCommand(this)">' + (!item.enabled ? translations['enable'] : translations['disable']) + '</button>' +
-          '<button type="button" onclick="commons.confirm(this)" style="border-top-right-radius:4px; border-bottom-right-radius:4px;" class="btn btn-danger btn-remove"><span class="glyphicon glyphicon-trash"></span></button>' +
-          '<button type="button" style="display: none" class="btn btn-success btn-confirm" onclick="cc.deleteCommand(this)" data-command="' + item.command + '"><span class="glyphicon glyphicon-ok"></span></button>' +
-          '<button type="button" style="display: none" class="btn btn-danger btn-confirm" onclick="commons.unconfirm(this)"><span class="glyphicon glyphicon-remove"></span></button>' +
+        $("#Commands").append('<tr>' +
+          '<td style="vertical-align: top !important;"><span class="label label-default">Command</span>' + commons.editable('!' + item.command, item.command, 'cc.editCommandName') + '</td>' +
+          '<td style="vertical-align: top !important;"><span class="label label-primary">Response</span> ' +
+            '<span style="cursor: pointer;" class="label label-' + (item.visible ? "success": "danger") + '" " data-command="' + item.command + '" onclick="cc.toggleVisibilityCommand(this)">' + (item.visible ? "visible": "hidden") + '</span> ' +
+            '<span style="cursor: pointer;" class="label label-' + (item.enabled ? "success": "danger") + '" data-command="' + item.command + '" onclick="cc.toggleCommand(this)">' + (item.enabled ? "enabled": "disabled") + '</span>' +
+            '<span style="cursor: not-allowed; float:right; padding: 4px;" class="label label-danger btn-remove" data-command="' + item.command + '"  onclick="commons.confirm(this)">delete</span>' +
+            '<span style="cursor: not-allowed; float:right; padding: 4px; display: none" class="label label-warning btn-confirm" onclick="commons.unconfirm(this)">cancel</span>' +
+            '<span style="cursor: not-allowed; float:right; padding: 4px; display: none" class="label label-success btn-confirm" onclick="cc.deleteCommand(this)" data-command="' + item.command + '">confirm</span>' +
+            commons.editable(item.response, item.command, 'cc.editCommand') +
           '</td>' +
           '</tr>');
       })
+    },
+    editCommandName: function (id, value) {
+      socket.emit('commands.edit.id', {id: id, value: value})
     },
     editCommand: function (id, value) {
       socket.emit('commands.edit', {id: id, value: value})
@@ -74,10 +76,10 @@
     },
     createCommand: function (event) {
       event.preventDefault()
-      var data = {command: $("#inputCommand").val(), response: $("#inputResponse").val()}
-      socket.emit('commands.create', data)
-      $("#inputCommand").val('')
-      $("#inputResponse").val('')
+      var inputs = $('[data-id="_new!"]')
+      var data = {command: $(inputs[0]).text().replace('!', ''), response: $(inputs[1]).text()}
+      socket.emit('commands.create', data).emit('commands.get')
+      $('.new-confirm-btn').css('display', 'none')
     }
   }
 
@@ -87,21 +89,14 @@
     cc.updateCommands(list)
   });
 
-
-
-  var $inputCommand = $('#inputCommand')
-  $inputCommand.off()
-  $inputCommand.on('keyup', function (ev) {
-    socket.emit('parser.isRegistered', { emit: 'alias.check', command: '!' + $(ev.target).val().trim() })
-  })
-
   socket.on('alias.check', function (data) {
     if (data.isRegistered) {
-      $("#inputCommand").parent().removeClass().addClass('col-xs-offset-2 col-xs-8 col-sm-offset-2 col-sm-8 input-group').addClass('has-error')
+      $('.status').removeClass().addClass('label label-danger status')
+      $('#save-button').prop('disabled', true)
     } else {
-      $("#inputCommand").parent().removeClass().addClass('col-xs-offset-2 col-xs-8 col-sm-offset-2 col-sm-8 input-group').addClass('has-success')
+      $('.status').removeClass().addClass('label label-success status')
+      $('#save-button').prop('disabled', false)
     }
-    if ($('#inputCommand').val().length === 0) $("#inputCommand").parent().removeClass().addClass('col-xs-offset-2 col-xs-8 col-sm-offset-2 col-sm-8 input-group')
   })
 
   window.cc = cc

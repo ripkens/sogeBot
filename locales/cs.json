@@ -53,6 +53,18 @@
     }
   },
   "webpanel": {
+    "responses": {
+      "variable": {
+        "sender": "Uživatel, který inicioval",
+        "title": "Aktuální název",
+        "game": "Aktuální hra",
+        "viewers": "Aktuální počet diváků",
+        "views": "Aktuální počet zobrazení",
+        "hosts": "Aktuální počet hostů",
+        "followers": "Aktuální počet followerů",
+        "subscribers": "Aktuální počet subscriberů"
+      }
+    },
     "page-settings": {
       "systems": {
         "whispers": {

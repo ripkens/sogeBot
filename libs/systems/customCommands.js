@@ -61,6 +61,7 @@ CustomCommands.prototype.webPanel = function () {
   global.panel.socketListening(this, 'commands.toggle', this.toggleCommands)
   global.panel.socketListening(this, 'commands.toggle.visibility', this.toggleVisibilityCommands)
   global.panel.socketListening(this, 'commands.edit', this.editCommands)
+  global.panel.socketListening(this, 'commands.edit.id', this.editCommandsId)
 }
 
 CustomCommands.prototype.sendCommands = function (self, socket) {
@@ -90,6 +91,14 @@ CustomCommands.prototype.createCommands = function (self, socket, data) {
 CustomCommands.prototype.editCommands = function (self, socket, data) {
   if (data.value.length === 0) self.remove(self, null, data.id)
   else _.find(self.commands, function (o) { return o.command === data.id }).response = data.value
+  self.sendCommands(self, socket)
+}
+
+CustomCommands.prototype.editCommandsId = function (self, socket, data) {
+  if (data.value.length === 0) self.remove(self, null, data.id)
+  else _.find(self.commands, function (o) { return o.command === data.id }).command = data.value.replace('!', '') // need to remove !
+  global.parser.unregister('!' + data.id)
+  self.register(self)
   self.sendCommands(self, socket)
 }
 

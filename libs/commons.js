@@ -133,7 +133,6 @@ Commons.prototype.sendMessage = async function (message, sender, attr = {}) {
     .replace(/\$followers/g, global.twitch.current.followers)
     .replace(/\$hosts/g, global.twitch.current.hosts)
     .replace(/\$subscribers/g, global.twitch.current.subscribers)
-    .replace(/\$bits/g, global.twitch.current.bits)
 
   if (!global.configuration.getValue('mute') || attr.force) {
     sender['message-type'] === 'whisper' ? global.log.whisperOut(message, {username: sender.username}) : global.log.chatOut(message, {username: sender.username})
