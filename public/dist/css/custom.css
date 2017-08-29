@@ -246,10 +246,16 @@ a.active {
 
 }
 
-.widget .title {
-  font-size: 18px;
-  border-bottom: 1px dotted #ddd;
-  padding: 5px;
+span.title {
+  display: inline-block;
+  font-size: 26px !important;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 0 !important;
+  padding:0 10px 3px 10px !important;
+  margin-bottom: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 100;
 }
 
 .widget .title:first-letter {
@@ -422,7 +428,7 @@ h2.title {
 
 .pages-wrapper {
   position: absolute;
-  top: 196px;
+  top: 170px;
   width: 100%;
 }
 
@@ -763,4 +769,8 @@ abbr[data-original-title], abbr[title] {
   border-radius: 5px !important;
   padding: 5px;
   background-color: white;
+}
+
+#pages {
+  top: -30px;
 }

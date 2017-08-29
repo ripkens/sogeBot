@@ -1,16 +1,28 @@
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-  <div class="widget">
-    <h2 class="title">
-      <span data-lang="custom-commands"></span>
-      <button class="btn btn-primary" onclick="cc.newCommand()"><i class="fa fa-plus" aria-hidden="true"></i></button>
-      <div class="btn-group">
-        <button id="save-button" class="btn btn-success new-confirm-btn" style="display:none" onclick="cc.createCommand(event)">SAVE</button>
-        <button class="btn btn-warning new-confirm-btn" style="display:none" onclick="cc.cancelNewCommand()">CANCEL</button>
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-8">
+    <ul class="nav nav-pills">
+      <li><span data-lang="custom-commands" class="title text-default"></span></li>
+      <li><button class="btn btn-success" id="plus-button" onclick="cc.newCommand()" style="padding: 9px 15px;"><i class="fa fa-plus" aria-hidden="true"></i></button></li>
+      <li class="active"><a data-toggle="tab" href="#manage">Manage</a></li>
+      <li><a data-toggle="tab" href="#responses">Bot responses</a></li>
+    </ul>
+  </div>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="manage">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="widget">
+        <table class="table table-striped table-responsive table-condensed">
+          <tbody id="Commands"></tbody>
+        </table>
       </div>
-    </h2>
-    <table class="table table-striped table-responsive table-condensed">
-      <tbody id="Commands"></tbody>
-    </table>
+    </div>
+  </div>
+
+  <div role="tabpanel" class="tab-pane" id="responses">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="widget">
+      </div>
+    </div>
   </div>
 </div>
 
@@ -43,6 +55,10 @@
           '<td style="vertical-align: top !important;"><span class="label label-default">New command</span> <span class="status label label-warning">available</span>' + commons.editable('', '_new!', 'cc.stub') + '</td>' +
           '<td style="vertical-align: top !important;"><span class="label label-primary">Response</span> ' +
               commons.editable('<empty response>', '_new!', 'cc.stub') +
+          '<div class="btn-group pull-right">' +
+            '<button id="save-button" class="btn btn-success new-confirm-btn" style="display:none" onclick="cc.createCommand(event)">SAVE</button>' +
+            '<button class="btn btn-warning new-confirm-btn" style="display:none" onclick="cc.cancelNewCommand()">CANCEL</button>' +
+          '</div>' +
           '</td>' +
           '</tr>');
       _.each(list, function(item, index) {
@@ -96,6 +112,15 @@
     } else {
       $('.status').removeClass().addClass('label label-success status')
       $('#save-button').prop('disabled', false)
+    }
+  })
+
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var target = $(e.target).attr("href") // activated tab
+    if (target === '#manage') {
+      $('#plus-button').prop('disabled', false)
+    } else {
+      $('#plus-button').prop('disabled', true)
     }
   })
 
