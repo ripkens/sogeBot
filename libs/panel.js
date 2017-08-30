@@ -6,6 +6,7 @@ var path = require('path')
 var basicAuth = require('basic-auth')
 var _ = require('lodash')
 var log = global.log
+var flatten = require('flat')
 
 const NOT_AUTHORIZED = '0'
 
@@ -82,6 +83,22 @@ function Panel () {
     socket.on('deleteUserTwitchTitle', function (data) { global.twitch.deleteUserTwitchTitle(global.twitch, socket, data) })
     socket.on('editUserTwitchTitle', function (data) { global.twitch.editUserTwitchTitle(global.twitch, socket, data) })
     socket.on('updateGameAndTitle', function (data) { global.twitch.updateGameAndTitle(global.twitch, socket, data) })
+
+    socket.on('responses.get', function (at, callback) {
+      var responses = flatten(global.translations[global.configuration.getValue('lang')][at])
+      _.each(responses, function (value, key) {
+        responses[key] = global.translate(at + '.' + key) // needed for nested translations
+      })
+      callback(responses)
+    })
+    socket.on('responses.set', function (data) {
+      _.remove(global.customTranslations, function (o) { return o.key === data.key })
+      global.customTranslations.push(data)
+    })
+    socket.on('responses.revert', function (data, callback) {
+      _.remove(global.customTranslations, function (o) { return o.key === data.key })
+      callback()
+    })
 
     socket.on('getWidgetList', function () { self.sendWidgetList(self, socket) })
     socket.on('addWidget', function (widget, row) { self.addWidgetToDb(self, widget, row, socket) })

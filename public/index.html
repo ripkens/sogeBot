@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Poppins" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow|PT+Sans|PT+Mono" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="./dist/bootstrap/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -482,6 +482,12 @@
 
 
       var commons = {
+        stub: function (id, value) {
+          return // do nothing
+        },
+        setResponse: function (key, value) {
+          socket.emit('responses.set', { key: key, value: value })
+        },
         translate: function () {
           _.each($('[data-lang]'), function (el) {
             var key = ($(el).data('lang'))
@@ -494,8 +500,8 @@
         },
         editable: function (string, id, fnc) {
           id = id || ''
-          string = string.toString()
-          var stringAbbr = string.replace(/\$(\w*)/g, '<span contenteditable="false" style="display: inline-block; font-family: monospace; color: #e00956; border: 1px solid #cbcbcb; border-radius: 5px !important; padding: 0 5px 0 5px; background-color: #f5f4f7" data-lang="responses.variable.$1"></span>')
+          string = !_.isNil(string) ? string.toString() : ''
+          var stringAbbr = string.replace(/\$(\w*)/g, '\ufeff<span contenteditable="false" style="display: inline-block; font-family: monospace; color: #e00956; border: 1px solid #cbcbcb; border-radius: 5px !important; padding: 0 5px 0 5px; background-color: #f5f4f7" data-lang="responses.variable.$1"></span>\ufeff')
           var output = '<abbr style="width: 100%" title="click to edit" data-id="' + id + '" data-fnc="' + fnc + '" contenteditable="true">' + stringAbbr + '</abbr>'
 
           setTimeout(function() {
@@ -509,9 +515,9 @@
               // When you leave an item...
               .blur(function() {
                 // ...if content is different...
-                if ($(this).data("initialText") !== $(this).html()) {
-                  var newString = $(this).html().replace(/<span .*?data-lang="responses\.variable\.(.+?)">.*?<\/span>/g, '&36;$1').replace(/&36;/g, '$').replace(/&nbsp;/g, ' ')
-                  $(this).html(newString.replace(/\$(\w*)/g, '<span contenteditable="false" style="display: inline-block; font-family: monospace; color: #e00956; border: 1px solid #cbcbcb; border-radius: 5px !important; padding: 0 5px 0 5px; background-color: #f5f4f7" data-lang="responses.variable.$1"></span>'))
+                if ($(this).data("initialText").trim() !== $(this).html().trim()) {
+                  var newString = $(this).html().trim().replace(/<span .*?data-lang="responses\.variable\.(.+?)">.*?<\/span>/g, '&36;$1').replace(/&36;/g, '$').replace(/&nbsp;/g, ' ').replace(/\ufeff/g, '')
+                  $(this).html(newString.replace(/\$(\w*)/g, '\ufeff<span contenteditable="false" style="display: inline-block; font-family: monospace; color: #e00956; border: 1px solid #cbcbcb; border-radius: 5px !important; padding: 0 5px 0 5px; background-color: #f5f4f7" data-lang="responses.variable.$1"></span>\ufeff'))
                   var fnc = $(this).data('fnc').split('.')
                   window[fnc[0]][fnc[1]]($(this).data('id'), newString)
                   commons.translate()

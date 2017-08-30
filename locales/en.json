@@ -62,7 +62,10 @@
         "views": "Current views count",
         "hosts": "Current hosts count",
         "followers": "Current followers count",
-        "subscribers": "Current subscribers count"
+        "subscribers": "Current subscribers count",
+        "arg": "Argument",
+        "response": "Response",
+        "list": "Populated list"
       }
     },
     "page-settings": {
@@ -524,20 +527,20 @@
   },
   "customcmds": {
     "success": {
-      "add": "Command was added to database",
-      "remove": "Command was deleted from database",
-      "list": "List of commands",
-      "enabled": "Command !$command was enabled",
-      "disabled": "Command !$command was disabled",
-      "visible": "Command !$command will be visible in list",
-      "invisible": "Command !$command will not be visible in list"
+      "add": "$sender, command !$arg was added to database",
+      "remove": "$sender, command !$arg was deleted from database",
+      "list": "$sender, list of commands: $list",
+      "enabled": "$sender, command !$arg was enabled",
+      "disabled": "$sender, command !$arg was disabled",
+      "visible": "$sender, command !$arg will be visible in list",
+      "invisible": "$sender, command !$arg will not be visible in list"
     },
     "failed": {
-      "add": "This command already exists in database",
-      "remove": "This command cannot be found in database",
-      "list": "List of commands is empty",
+      "add": "$sender, command !$arg already exists in database",
+      "remove": "$sender, command !$arg cannot be found in database",
+      "list": "$sender, list of commands is empty",
       "parse": "{core.command-parse} !command",
-      "toggle": "Command !$command was not found",
+      "toggle": "$sender, command !$arg was not found",
       "visible": "{customcmds.failed.remove}"
     }
   },

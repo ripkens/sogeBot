@@ -66,6 +66,21 @@
       }
     },
     "page-settings": {
+      "responses": {
+        "variable": {
+          "sender": "User who initiated",
+          "title": "Current title",
+          "game": "Current game",
+          "viewers": "Current viewers count",
+          "views": "Current views count",
+          "hosts": "Current hosts count",
+          "followers": "Current followers count",
+          "subscribers": "Current subscribers count",
+          "arg": "Argument",
+          "response": "Response",
+          "list": "Populated list"
+        }
+      },
       "systems": {
         "whispers": {
           "title": "Šeptání",

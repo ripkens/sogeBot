@@ -9,7 +9,7 @@
 body {
   padding-top: 50px;
   background-color: #eee;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'PT Sans', sans-serif;
 }
 
 .navbar-fixed-top {
@@ -84,7 +84,7 @@ a.active {
 .stream-info h2 {
   position: absolute;
   top: -10px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -242,20 +242,21 @@ a.active {
   font-weight: bold;
   text-shadow: 0 0 2px #000, 0 0 4px #888, 0 0 8px #888;
   color:white;
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: 'PT Sans', sans-serif !important;
 
 }
 
 span.title {
   display: inline-block;
   font-size: 26px !important;
-  font-weight: bold;
+  font-weight: bold !important;
   text-transform: uppercase;
   border: 0 !important;
   padding:0 10px 3px 10px !important;
   margin-bottom: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'PT Sans Narrow', sans-serif;
   font-weight: 100;
+  color: #777;
 }
 
 .widget .title:first-letter {
@@ -268,7 +269,7 @@ span.title {
 
 .widget textarea {
   font-size: 80%;
-  font-family: monospace;
+  font-family: 'PT Mono', monospace;
 }
 
 .widget .controls {
@@ -292,7 +293,7 @@ span.title {
 
 #widgets > div {
   padding: 10px;
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: 'PT Sans', sans-serif !important;
   font-weight: bold;
   font-size: 12px;
   text-shadow: 0 0 2px #000, 0 0 4px #888, 0 0 8px #888
@@ -415,7 +416,7 @@ h2.title {
   left: 10px;
   padding-bottom: 0;
   margin-bottom: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'PT Sans Narrow', sans-serif;
   font-weight: 100;
 }
 
@@ -467,7 +468,7 @@ table td {
 }
 
 table a {
-  font-family: 'Cousine', monospace;
+  font-family: 'PT Mono', monospace;
   font-size: 10px;
   color:#999;
 }
@@ -598,7 +599,7 @@ a.soundboard-list-group-item span {
 .form-chainops {
   padding: 10px;
   font-weight: lighter;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'PT Sans', sans-serif;
 }
 
 .form-chainops .has-error label {
@@ -773,4 +774,13 @@ abbr[data-original-title], abbr[title] {
 
 #pages {
   top: -30px;
+}
+
+.label {
+  font-size: 90%;
+}
+
+kbd {
+  padding: 3px 4px;
+  font-family: 'PT Mono', monospace
 }

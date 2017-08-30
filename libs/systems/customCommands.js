@@ -147,7 +147,7 @@ CustomCommands.prototype.run = function (self, sender, msg, fullMsg) {
 CustomCommands.prototype.list = function (self, sender, text) {
   var commands = []
   _.each(self.commands, function (element) { if (element.visible) commands.push('!' + element.command) })
-  var output = (commands.length === 0 ? global.translate('customcmds.failed.list') : global.translate('customcmds.success.list') + ': ' + commands.join(', '))
+  var output = (commands.length === 0 ? global.translate('customcmds.failed.list') : global.translate('customcmds.success.list').replace(/\$list/g, commands.join(', ')))
   global.commons.sendMessage(output, sender)
 }
 
@@ -156,14 +156,14 @@ CustomCommands.prototype.toggle = function (self, sender, text) {
     let parsed = text.match(/^!([\u0500-\u052F\u0400-\u04FF\w]+)$/)[1]
     let command = _.find(self.commands, function (o) { return o.command === parsed })
     if (_.isUndefined(command)) {
-      global.commons.sendMessage(global.translate('command.failed.toggle')
-        .replace(/\$command/g, parsed), sender)
+      global.commons.sendMessage(global.translate('customcmds.failed.toggle')
+        .replace(/\$arg/g, parsed), sender)
       return
     }
 
     command.enabled = !command.enabled
     global.commons.sendMessage(global.translate(command.enabled ? 'customcmds.success.enabled' : 'customcmds.success.disabled')
-      .replace(/\$command/g, command.command), sender)
+      .replace(/\$arg/g, command.command), sender)
 
     if (command.enabled) { self.register(self) }
   } catch (e) {
@@ -176,14 +176,14 @@ CustomCommands.prototype.visible = function (self, sender, text) {
     let parsed = text.match(/^!([\u0500-\u052F\u0400-\u04FF\w]+)$/)[1]
     let command = _.find(self.commands, function (o) { return o.command === parsed })
     if (_.isUndefined(command)) {
-      global.commons.sendMessage(global.translate('command.failed.visible')
-        .replace(/\$command/g, parsed), sender)
+      global.commons.sendMessage(global.translate('customcmds.failed.visible')
+        .replace(/\$arg/g, parsed), sender)
       return
     }
 
     command.visible = !command.visible
     global.commons.sendMessage(global.translate(command.visible ? 'customcmds.success.visible' : 'customcmds.success.invisible')
-      .replace(/\$command/g, command.command), sender)
+      .replace(/\$arg/g, command.command), sender)
   } catch (e) {
     global.commons.sendMessage(global.translate('customcmds.failed.parse'), sender)
   }
