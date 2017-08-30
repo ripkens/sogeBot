@@ -123,7 +123,7 @@
       this.list = list
       $("#Commands").empty()
       $("#Commands").append('<tr id="new-command" style="display:none">' +
-          '<td style="vertical-align: top !important;"><span class="label label-default">New command</span> <span class="status label label-warning">available</span>' + commons.editable('', '_new!', 'commons.stub') + '</td>' +
+          '<td style="vertical-align: top !important;min-width: 150px;"><span class="label label-default">New command</span> <span class="status label label-warning">available</span>' + commons.editable('', '_new!', 'commons.stub') + '</td>' +
           '<td style="vertical-align: top !important;"><span class="label label-primary">Response</span> ' +
               commons.editable('<empty response>', '_new!', 'cc.stub') +
           '<div class="btn-group pull-right">' +
@@ -134,7 +134,7 @@
           '</tr>');
       _.each(list, function(item, index) {
         $("#Commands").append('<tr class="page-data-row">' +
-            '<td style="vertical-align: top !important;"><span class="label label-default">Command</span>' + commons.editable('!' + item.command, item.command, 'cc.editName') + '</td>' +
+            '<td style="vertical-align: top !important;min-width: 150px;"><span class="label label-default">Command</span>' + commons.editable('!' + item.command, item.command, 'cc.editName') + '</td>' +
             '<td style="vertical-align: top !important;"><span class="label label-primary">Response</span> ' +
               '<span style="cursor: pointer;" class="label label-' + (item.visible ? "success": "danger") + '" " data-command="' + item.command + '" onclick="cc.toggleVisibility(this)">' + (item.visible ? "visible": "hidden") + '</span> ' +
               '<span style="cursor: pointer;" class="label label-' + (item.enabled ? "success": "danger") + '" data-command="' + item.command + '" onclick="cc.toggle(this)">' + (item.enabled ? "enabled": "disabled") + '</span>' +
