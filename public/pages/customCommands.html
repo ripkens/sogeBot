@@ -1,7 +1,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
   <ul class="nav nav-pills">
     <li><span data-lang="custom-commands" class="title text-default"></span></li>
-    <li><button class="btn btn-success" id="plus-button" onclick="cc.new()" style="padding: 9px 15px;"><i class="fa fa-plus" aria-hidden="true"></i></button></li>
+    <li><button class="btn btn-success plus-button" onclick="cc.new()" style="padding: 9px 15px;"><i class="fa fa-plus" aria-hidden="true"></i></button></li>
     <li class="active"><a data-toggle="tab" href="#manage">Manage</a></li>
     <li><a data-toggle="tab" href="#responses">Responses</a></li>
   </ul>
@@ -21,80 +21,80 @@
   <div role="tabpanel" class="tab-pane" id="responses">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="widget">
-      <table class="table table-striped table-responsive table-condensed">
-        <tbody id="Responses">
-          <tr>
-            <td colspan="2">
-              <kbd>!command add !$arg $response</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-success">Success</span>
-              <span class="custom-response" data-id="customcmds.success.add"></span>
-            </td>
-            <td colspan="2">
-              <kbd>!command add !$arg $response</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
-              <span class="custom-response" data-id="customcmds.failed.add"></span>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <kbd>!command remove !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-success">Success</span>
-              <span class="custom-response" data-id="customcmds.success.remove"></span>
-            </td>
-            <td colspan="2">
-              <kbd>!command remove !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
-              <span class="custom-response" data-id="customcmds.failed.remove"></span>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <kbd>!command list</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-success">Populated</span>
-              <span class="custom-response" data-id="customcmds.success.list"></span>
-            </td>
-            <td colspan="2">
-              <kbd>!command list</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-warning">Empty</span>
-              <span class="custom-response" data-id="customcmds.failed.list"></span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <kbd>!command toggle !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-success">Enabled</span>
-              <span class="custom-response" data-id="customcmds.success.enabled"></span>
-            </td>
-            <td colspan="2">
-              <kbd>!command toggle !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-warning">Disabled</span>
-              <span class="custom-response" data-id="customcmds.success.disabled"></span>
-            </td>
-            <td>
-              <kbd>!command toggle !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
-              <span class="custom-response" data-id="customcmds.failed.toggle"></span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <kbd>!command toggle-visibility !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-success">Visible</span>
-              <span class="custom-response" data-id="customcmds.success.visible"></span>
-            </td>
-            <td colspan="2">
-              <kbd>!command toggle-visibility !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-warning">Invisible</span>
-              <span class="custom-response" data-id="customcmds.success.invisible"></span>
-            </td>
-            <td>
-              <kbd>!command toggle-visibility !$arg</kbd>
-              <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
-              <span class="custom-response" data-id="customcmds.failed.visible"></span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="table table-striped table-responsive table-condensed">
+          <tbody id="Responses">
+            <tr>
+              <td colspan="2">
+                <kbd>!command add !$command $response</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-success">Success</span>
+                <span class="custom-response" data-id="customcmds.success.add"></span>
+              </td>
+              <td colspan="2">
+                <kbd>!command add !$command $response</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
+                <span class="custom-response" data-id="customcmds.failed.add"></span>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <kbd>!command remove !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-success">Success</span>
+                <span class="custom-response" data-id="customcmds.success.remove"></span>
+              </td>
+              <td colspan="2">
+                <kbd>!command remove !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
+                <span class="custom-response" data-id="customcmds.failed.remove"></span>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <kbd>!command list</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-success">Populated $list</span>
+                <span class="custom-response" data-id="customcmds.success.list"></span>
+              </td>
+              <td colspan="2">
+                <kbd>!command list</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-warning">Empty</span>
+                <span class="custom-response" data-id="customcmds.failed.list"></span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <kbd>!command toggle !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-success">Enabled</span>
+                <span class="custom-response" data-id="customcmds.success.enabled"></span>
+              </td>
+              <td colspan="2">
+                <kbd>!command toggle !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-warning">Disabled</span>
+                <span class="custom-response" data-id="customcmds.success.disabled"></span>
+              </td>
+              <td>
+                <kbd>!command toggle !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
+                <span class="custom-response" data-id="customcmds.failed.toggle"></span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <kbd>!command toggle-visibility !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-success">Visible</span>
+                <span class="custom-response" data-id="customcmds.success.visible"></span>
+              </td>
+              <td colspan="2">
+                <kbd>!command toggle-visibility !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-warning">Invisible</span>
+                <span class="custom-response" data-id="customcmds.success.invisible"></span>
+              </td>
+              <td>
+                <kbd>!command toggle-visibility !$command</kbd>
+                <span class="label label-primary">Response</span> <span class="label label-danger">Failure</span>
+                <span class="custom-response" data-id="customcmds.failed.visible"></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -127,7 +127,7 @@
           '<td style="vertical-align: top !important;"><span class="label label-primary">Response</span> ' +
               commons.editable('<empty response>', '_new!', 'cc.stub') +
           '<div class="btn-group pull-right">' +
-            '<button id="save-button" class="btn btn-success new-confirm-btn" style="display:none" onclick="cc.create(event)">SAVE</button>' +
+            '<button class="save-button btn btn-success new-confirm-btn" style="display:none" onclick="cc.create(event)">SAVE</button>' +
             '<button class="btn btn-warning new-confirm-btn" style="display:none" onclick="cc.cancel()">CANCEL</button>' +
           '</div>' +
           '</td>' +
@@ -147,19 +147,19 @@
       })
     },
     editName: function (id, value) {
-      socket.emit('commands.edit.id', {id: id, value: value})
+      socket.emit('commands.edit.id', {id: id, value: value}).emit('commands.get')
     },
     edit: function (id, value) {
-      socket.emit('commands.edit', {id: id, value: value})
+      socket.emit('commands.edit', {id: id, value: value}).emit('commands.get')
     },
     delete: function (el) {
-      socket.emit('commands.delete', el.dataset.command)
+      socket.emit('commands.delete', el.dataset.command).emit('commands.get')
     },
     toggle: function (el) {
-      socket.emit('commands.toggle', el.dataset.command)
+      socket.emit('commands.toggle', el.dataset.command).emit('commands.get')
     },
     toggleVisibility: function (el) {
-      socket.emit('commands.toggle.visibility', el.dataset.command)
+      socket.emit('commands.toggle.visibility', el.dataset.command).emit('commands.get')
     },
     create: function (event) {
       event.preventDefault()
@@ -189,19 +189,20 @@
   socket.on('alias.check', function (data) {
     if (data.isRegistered) {
       $('.status').removeClass().addClass('label label-danger status')
-      $('#save-button').prop('disabled', true)
+      $('.save-button').prop('disabled', true)
     } else {
       $('.status').removeClass().addClass('label label-success status')
-      $('#save-button').prop('disabled', false)
+      $('.save-button').prop('disabled', false)
     }
   })
 
+  $('a[data-toggle="tab"]').off()
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     var target = $(e.target).attr("href") // activated tab
     if (target === '#manage') {
-      $('#plus-button').prop('disabled', false)
+      $('.plus-button').prop('disabled', false)
     } else {
-      $('#plus-button').prop('disabled', true)
+      $('.plus-button').prop('disabled', true)
     }
   })
 

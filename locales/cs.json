@@ -77,6 +77,8 @@
           "followers": "Current followers count",
           "subscribers": "Current subscribers count",
           "arg": "Argument",
+          "alias": "Alias",
+          "command": "Command",
           "response": "Response",
           "list": "Populated list"
         }

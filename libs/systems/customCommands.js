@@ -70,28 +70,23 @@ CustomCommands.prototype.sendCommands = function (self, socket) {
 
 CustomCommands.prototype.deleteCommands = function (self, socket, data) {
   self.remove(self, null, '!' + data)
-  self.sendCommands(self, socket)
 }
 
 CustomCommands.prototype.toggleCommands = function (self, socket, data) {
   self.toggle(self, null, '!' + data)
-  self.sendCommands(self, socket)
 }
 
 CustomCommands.prototype.toggleVisibilityCommands = function (self, socket, data) {
   self.visible(self, null, '!' + data)
-  self.sendCommands(self, socket)
 }
 
 CustomCommands.prototype.createCommands = function (self, socket, data) {
   self.add(self, null, '!' + data.command + ' ' + data.response)
-  self.sendCommands(self, socket)
 }
 
 CustomCommands.prototype.editCommands = function (self, socket, data) {
   if (data.value.length === 0) self.remove(self, null, data.id)
   else _.find(self.commands, function (o) { return o.command === data.id }).response = data.value
-  self.sendCommands(self, socket)
 }
 
 CustomCommands.prototype.editCommandsId = function (self, socket, data) {
@@ -99,7 +94,6 @@ CustomCommands.prototype.editCommandsId = function (self, socket, data) {
   else _.find(self.commands, function (o) { return o.command === data.id }).command = data.value.replace('!', '') // need to remove !
   global.parser.unregister('!' + data.id)
   self.register(self)
-  self.sendCommands(self, socket)
 }
 
 CustomCommands.prototype.help = function (self, sender) {
@@ -157,13 +151,13 @@ CustomCommands.prototype.toggle = function (self, sender, text) {
     let command = _.find(self.commands, function (o) { return o.command === parsed })
     if (_.isUndefined(command)) {
       global.commons.sendMessage(global.translate('customcmds.failed.toggle')
-        .replace(/\$arg/g, parsed), sender)
+        .replace(/\$command/g, parsed), sender)
       return
     }
 
     command.enabled = !command.enabled
     global.commons.sendMessage(global.translate(command.enabled ? 'customcmds.success.enabled' : 'customcmds.success.disabled')
-      .replace(/\$arg/g, command.command), sender)
+      .replace(/\$command/g, command.command), sender)
 
     if (command.enabled) { self.register(self) }
   } catch (e) {
@@ -177,13 +171,13 @@ CustomCommands.prototype.visible = function (self, sender, text) {
     let command = _.find(self.commands, function (o) { return o.command === parsed })
     if (_.isUndefined(command)) {
       global.commons.sendMessage(global.translate('customcmds.failed.visible')
-        .replace(/\$arg/g, parsed), sender)
+        .replace(/\$command/g, parsed), sender)
       return
     }
 
     command.visible = !command.visible
     global.commons.sendMessage(global.translate(command.visible ? 'customcmds.success.visible' : 'customcmds.success.invisible')
-      .replace(/\$arg/g, command.command), sender)
+      .replace(/\$command/g, command.command), sender)
   } catch (e) {
     global.commons.sendMessage(global.translate('customcmds.failed.parse'), sender)
   }

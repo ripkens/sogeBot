@@ -64,6 +64,7 @@ Alias.prototype.webPanel = function () {
   global.panel.socketListening(this, 'alias.toggle', this.toggleAlias)
   global.panel.socketListening(this, 'alias.toggle.visibility', this.toggleVisibilityAlias)
   global.panel.socketListening(this, 'alias.edit', this.editAlias)
+  global.panel.socketListening(this, 'alias.edit.id', this.editAliasId)
 }
 
 Alias.prototype.sendAliases = function (self, socket) {
@@ -72,24 +73,20 @@ Alias.prototype.sendAliases = function (self, socket) {
 
 Alias.prototype.deleteAlias = function (self, socket, data) {
   self.remove(self, null, '!' + data)
-  self.sendAliases(self, socket)
 }
 
 Alias.prototype.toggleAlias = function (self, socket, data) {
   self.toggle(self, null, '!' + data)
-  self.sendAliases(self, socket)
 }
 
 Alias.prototype.toggleVisibilityAlias = function (self, socket, data) {
   self.visible(self, null, '!' + data)
-  self.sendAliases(self, socket)
 }
 
 Alias.prototype.createAlias = function (self, socket, data) {
   if (data.command.startsWith('!')) data.command = data.command.replace('!', '')
-  if (data.value.startsWith('!')) data.value = data.value.replace('!', '')
-  self.add(self, null, '!' + data.command + ' !' + data.value)
-  self.sendAliases(self, socket)
+  if (data.alias.startsWith('!')) data.alias = data.alias.replace('!', '')
+  self.add(self, null, '!' + data.command + ' !' + data.alias)
 }
 
 Alias.prototype.editAlias = function (self, socket, data) {
@@ -98,7 +95,14 @@ Alias.prototype.editAlias = function (self, socket, data) {
     if (data.value.startsWith('!')) data.value = data.value.replace('!', '')
     _.find(self.alias, function (o) { return o.alias === data.id }).command = data.value
   }
-  self.sendAliases(self, socket)
+}
+
+Alias.prototype.editAliasId = function (self, socket, data) {
+  if (data.value.length === 0) self.remove(self, null, '!' + data.id)
+  else {
+    if (data.value.startsWith('!')) data.value = data.value.replace('!', '')
+    _.find(self.alias, function (o) { return o.alias === data.id }).alias = data.value
+  }
 }
 
 Alias.prototype.help = function (self, sender) {
@@ -122,7 +126,9 @@ Alias.prototype.add = function (self, sender, text) {
 
     let alias = _.find(self.alias, function (oAlias) { return oAlias.alias === data.alias })
     if (_.isUndefined(alias)) self.alias.push(data)
-    global.commons.sendMessage(global.translate(_.isUndefined(alias) ? 'alias.success.add' : 'alias.failed.add'), sender)
+    global.commons.sendMessage(global.translate(_.isUndefined(alias) ? 'alias.success.add' : 'alias.failed.add')
+      .replace(/\$alias/g, data.alias)
+      .replace(/\$command/g, data.command), sender)
   } catch (e) {
     global.commons.sendMessage(global.translate('alias.failed.parse'), sender)
   }
@@ -141,7 +147,7 @@ Alias.prototype.run = function (self, sender, msg, fullMsg) {
 Alias.prototype.list = function (self, sender, text) {
   var aliases = []
   _.each(self.alias, function (element) { if (element.visible) aliases.push('!' + element.alias) })
-  var output = (aliases.length === 0 ? global.translate('alias.failed.list') : global.translate('alias.success.list') + ': ' + aliases.join(', '))
+  var output = (aliases.length === 0 ? global.translate('alias.failed.list') : global.translate('alias.success.list').replace(/\$list/g, aliases.join(', ')))
   global.commons.sendMessage(output, sender)
 }
 
